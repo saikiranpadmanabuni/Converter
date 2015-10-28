@@ -1,16 +1,38 @@
 package converter.com.currencyconverter;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
 
 public class CurrencyConverter extends AppCompatActivity {
+
+	private EditText editeTextAmount;
+	private ListView listView;
+	private Spinner spinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_currency_converter);
+		editeTextAmount = (EditText) findViewById(R.id.editText);
+		spinner = (Spinner) findViewById(R.id.spinner);
+		final CurrencyAdapter currencyAdapter = new CurrencyAdapter(this);
+		findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int selectedPosition = spinner.getSelectedItemPosition();
+				currencyAdapter.setSelectedPosition(selectedPosition);
+				currencyAdapter.calculate(editeTextAmount.getText().toString());
+				currencyAdapter.notifyDataSetChanged();
+			}
+		});
+		listView = (ListView) findViewById(R.id.listView);
+		listView.setAdapter(currencyAdapter);
 	}
 
 	@Override
